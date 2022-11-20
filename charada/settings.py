@@ -8,9 +8,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-s)o8(#&86hog&%svx#%@4gy667xl-=knv#bs00is425a)_mn_1'
 
-DEBUG = True
-
-ALLOWED_HOSTS = ['*']
 
 BASE_APPS = [
     'django.contrib.admin',
@@ -139,15 +136,14 @@ if socket.gethostname() == 'DESKTOP-LVC68NK':
 # CONFIGURACIONES PRODUCCION
 else:
     DEBUG = TEMPLATE_DEBUG = False
-    ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS = ['fuhrer.pythonanywhere.com']
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'postgres',
-            'USER': 'postgres',
-            'PASSWORD': 'postgres',
-            'HOST': '127.0.0.1',
-            'PORT': '5433',
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'fuhrer$charada',
+            'USER': 'fuhrer',
+            'PASSWORD': 'postgresCharada',
+            'HOST': 'fuhrer.mysql.pythonanywhere-services.com',
         }
     }
 
@@ -156,4 +152,8 @@ else:
     STATICFILES_DIRS = [
         os.path.join(BASE_DIR, "static")
     ]
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static_files')
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+    MEDIA_URL = '/media/'
+
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
