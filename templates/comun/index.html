@@ -1,0 +1,187 @@
+{% load static %}
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>ABC | Project</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% block css %}
+        {#        <link rel="icon" href="../favicon.ico" type="image/x-icon"/>#}
+        <link rel="stylesheet" href="{% static 'plugins/bootstrap/dist/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+        <link rel="stylesheet" href="{% static 'plugins/icon-kit/dist/css/iconkit.min.css' %}">
+        <link rel="stylesheet" href="{% static 'plugins/perfect-scrollbar/css/perfect-scrollbar.css' %}">
+        <link rel="stylesheet"
+              href="{% static 'plugins/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css' %}">
+        <link rel="stylesheet" href="{% static 'plugins/theme/css/theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'plugins/toastr/toastr.min.css' %}">
+        <link rel="stylesheet" href="{% static 'propios/css/styles.css' %}">
+        <script src=" {% static 'plugins/vendor/modernizr-2.8.3.min.js' %}"></script>
+    {% endblock %}
+
+    {% block extra_css %}
+    {% endblock %}
+
+    {% load pwa %}
+    {% progressive_web_app_meta %}
+</head>
+
+<body>
+<div class="wrapper">
+    <div class="page-wrap">
+        <div class="main-content">
+            <div class="container-fluid">
+                {% block content %}
+                    <div class="row">
+                        <div class="col-lg-4 col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>Resumen</h3>
+                                    <div class="card-header-right">
+                                        <ul class="list-unstyled card-option">
+                                            <li><a  href="{% url 'usuario:login' %}"><i class="ik ik-chevron-left action-toggle"></i></a></li>
+                                            <li><i class="ik ik-minus minimize-card"></i></li>
+                                            <li><i class="ik ik-x close-card"></i></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <div class="row pp-main">
+                                        <div class="col-xl-3 col-md-6">
+                                            <div class="pp-cont">
+                                                <div class="row align-items-center mb-20">
+                                                    <div class="col-auto">
+                                                        <i class="fas fa-cube f-24 text-mute"></i>
+                                                    </div>
+                                                    <div class="col text-right">
+                                                        <h2 class="mb-0 text-blue">2476</h2>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center mb-15">
+                                                    <div class="col-auto">
+                                                        <p class="mb-0">Total de productos</p>
+                                                    </div>
+                                                    <div class="col text-right">
+                                                        <p class="mb-0 text-blue"><i
+                                                                class="fas fa-long-arrow-alt-up mr-10"></i>64%</p>
+                                                    </div>
+                                                </div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-blue" style="width:45%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-md-6">
+                                            <div class="pp-cont">
+                                                <div class="row align-items-center mb-20">
+                                                    <div class="col-auto">
+                                                        <i class="fas fa-tag f-24 text-mute"></i>
+                                                    </div>
+                                                    <div class="col text-right">
+                                                        <h2 class="mb-0 text-red">843</h2>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center mb-15">
+                                                    <div class="col-auto">
+                                                        <p class="mb-0">Nuevas ordenes</p>
+                                                    </div>
+                                                    <div class="col text-right">
+                                                        <p class="mb-0 text-red"><i
+                                                                class="fas fa-long-arrow-alt-down mr-10"></i>34%</p>
+                                                    </div>
+                                                </div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-red" style="width:75%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-md-6">
+                                            <div class="pp-cont">
+                                                <div class="row align-items-center mb-20">
+                                                    <div class="col-auto">
+                                                        <i class="fas fa-random f-24 text-mute"></i>
+                                                    </div>
+                                                    <div class="col text-right">
+                                                        <h2 class="mb-0 text-c-yellow">63%</h2>
+                                                    </div>
+                                                </div>
+                                                <div class="row align-items-center mb-15">
+                                                    <div class="col-auto">
+                                                        <p class="mb-0">Rango de conversion</p>
+                                                    </div>
+                                                    <div class="col text-right">
+                                                        <p class="mb-0 text-yellow"><i
+                                                                class="fas fa-long-arrow-alt-up mr-10"></i>64%</p>
+                                                    </div>
+                                                </div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-yellow" style="width:65%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer chat-footer">
+                                    <div class="input-wrap">
+                                        <input type="text" readonly placeholder="Ingrese su correo" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+        {% include 'comun/footer.html' %}
+    </div>
+</div>
+
+{% block js %}
+    <script src="{% static 'plugins/vendor/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'plugins/vue.js/vue.min.js' %}"></script>
+    <script src="{% static 'plugins/popper.js/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'plugins/moment/moment.js' %}"></script>
+    <script src="{% static 'plugins/tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+    <script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
+    <script src="{% static 'plugins/theme/js/theme.min.js' %}"></script>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}
+
+{% block mensajes %}
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <script type="text/javascript">toastr.{{ message.tags }}('{{ message }}', 'Error', {
+                    progressBar: true,
+                    closeButton: true,
+                    positionClass: "toast-bottom-left",
+                    "timeOut": "3000",
+                })</script>
+            {% elif message.tags == 'info' %}
+                <script type="text/javascript">toastr.{{ message.tags }}('{{ message }}', 'Información', {
+                    progressBar: true,
+                    closeButton: true,
+                    positionClass: "toast-bottom-left",
+                    "timeOut": "3000",
+                })</script>
+            {% else %}
+                <script type="text/javascript">toastr.{{ message.tags }}('{{ message }}', 'Éxito', {
+                    progressBar: true,
+                    closeButton: true,
+                    positionClass: "toast-bottom-left",
+                    "timeOut": "3000",
+                })</script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+</body>
+</html>
+

@@ -1,0 +1,40 @@
+{% extends 'comun/index.html' %}
+
+{% block content %}
+    <div class="col-xl-4 col-lg-6 col-md-7 my-auto p-0">
+        <div class="authentication-form mx-auto">
+            <h3 class="textoLogin" style="">Charada</h3>
+            <p class="textoLogin">Inicio de sesión.</p>
+            <hr>
+            <form method="post">
+                {% csrf_token %}
+                 <input type="hidden" name="next" value="{{ next }}">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" autofocus placeholder="ingrese usuario" required="" >
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password"  placeholder="ingrese contraseña" required="">
+                </div>
+                <div class="sign-btn text-center">
+                    <button type="submit" class="btn btn-theme">Aceptar <i class=" fa fa-arrow-alt-circle-right"></i></button>
+                </div>
+            </form>
+            <hr>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+     <script type="text/javascript">
+    {% if form.errors %}
+        {% for error in form.non_field_errors %}
+            toastr.error('{{ error }}', 'Error', {
+                "closeButton": true,
+                "progressBar": true,
+                positionClass: "toast-bottom-left",
+                "timeOut": "3000",
+            });
+        {% endfor %}
+    {% endif %}
+</script>
+{% endblock %}

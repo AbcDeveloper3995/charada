@@ -1,0 +1,253 @@
+{% extends 'comun/listar.html' %}
+{% load static %}
+{% load filters %}
+
+{% block encabezadoTabla %}
+    <i class="fa fa-table"></i> <strong>{{ titulo }}</strong>
+{% endblock %}
+
+{% block contentExtra %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <ul class="nav nav-pills custom-pills" id="pills-tab" role="tablist" style="">
+                    <li class="nav-item">
+                        <a class="nav-link active show" id="pills-timeline-tab" data-toggle="pill" href="#current-month"
+                           role="tab"
+                           aria-controls="pills-timeline" aria-selected="false">Bola</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#last-month" role="tab"
+                           aria-controls="pills-profile" aria-selected="false">Parlet</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link  " id="pills-setting-tab" data-toggle="pill" href="#previous-month"
+                           role="tab" aria-controls="pills-setting" aria-selected="true">Centena</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link  " id="pills-setting-tab" data-toggle="pill" href="#contabilidad"
+                           role="tab" aria-controls="pills-setting" aria-selected="true">Contabilidad</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade active show" id="current-month" role="tabpanel"
+                         aria-labelledby="pills-timeline-tab">
+                        <div class="card-body">
+                            {% if bolas != False %}
+                                {% for b in bolas %}
+                                    <div style="display: grid; grid-template-columns: repeat(2, 100px);">
+                                        <span class="badge badge-light"
+                                              style=" margin-bottom:10px; box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">{{ b.numero }}
+                                            {% if b.tipo == 1 %}({{ b.apostado }}){% else %}(0) ({{ b.apostado }}
+                                                ){% endif %}</span>
+                                        <span class="badge badge-light"
+                                              style="margin-left:50px; margin-bottom:10px; box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82); color: red !important;">
+                                            ${{ b.premio }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                                     style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">
+                                    <strong class="text-uppercase">No hay bolas con premio.</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <i class="ik ik-x"></i>
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="last-month" role="tabpanel" aria-labelledby="pills-profile-tab">
+                        <div class="card-body">
+
+                            {% if parlets != False %}
+                                {% for b in parlets %}
+                                    <div style="display: grid; grid-template-columns: repeat(2, 100px);">
+                                        <span class="badge badge-light"
+                                              style="margin-bottom:10px; box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">{{ b.parlet }} ({{ b.apostado }})</span>
+                                        <span class="badge badge-light"
+                                              style="margin-left:50px; margin-bottom:10px; box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82); color: red !important;">${{ b.premio }}</span>
+
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                                     style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">
+                                    <strong class="text-uppercase">No hay parlets con premio.</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <i class="ik ik-x"></i>
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade " id="previous-month" role="tabpanel"
+                         aria-labelledby="pills-setting-tab">
+                        <div class="card-body">
+                            {% if centenas != False %}
+                                {% for b in centenas %}
+                                    <div style="display: grid; grid-template-columns: repeat(2, 100px);">
+                                        <span class="badge badge-light"
+                                              style="margin-bottom:10px; box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">{{ b.numero }} ({{ b.apostado }})</span>
+                                        <span class="badge badge-light"
+                                              style="margin-left:50px; margin-bottom:10px; box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82); color: red !important;">${{ b.premio }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                                     style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">
+                                    <strong class="text-uppercase">No hay centenas con premio.</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <i class="ik ik-x"></i>
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="tab-pane fade " id="contabilidad" role="tabpanel"
+                         aria-labelledby="pills-setting-tab">
+                        <div class="card-body">
+                            {% if contabilidad != False %}
+                                <div class="alert alert-secondary alert-dismissible fade show" role="alert"
+                                     style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">
+                                    <div><strong>LIMPIO:</strong> ${{ contabilidad.limpio }}</div>
+                                    <hr>
+                                    <div><strong>PREMIO:</strong> ${{ contabilidad.premio }}</div>
+                                    <hr>
+                                    {% if  contabilidad.bruto|obtenerGanacia:contabilidad.premio > 0 %}
+                                        <div><strong>GAN/PER:</strong><span
+                                                style="color: #1c7430"> ${{ contabilidad.limpio|obtenerGanacia:contabilidad.premio }}
+                                    <i class="fa fa-arrow-up text-green"></i> (GANACIA)</span></div>
+                                    {% else %}
+                                        <div><strong>GAN/PER:</strong> <span
+                                                style="color: red">${{ contabilidad.limpio|obtenerGanacia:contabilidad.premio }}
+                                    <i class="fa fa-arrow-down text-red   "></i> (PERDIDA)</span></div>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                                     style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">
+                                    <strong class="text-uppercase">Aún no hay registro contable.</strong>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <i class="ik ik-x"></i>
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    {% if 'usuario.banco' in request.user.get_group_permissions  or 'usuario.administrador' in request.user.get_group_permissions %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header"><span class="badge badge-dark"
+                                                   style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">$ Contabilidad General</span>
+                    </div>
+                    <div class="card-body">
+                        {% if contabilidadGeneral != False %}
+                            {% for b in contabilidadGeneral %}
+                                <div style="display: grid; grid-template-columns: repeat(3, 100px);">
+                                        <span class="badge badge-light"
+                                              style="margin-bottom:10px; box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">{{ b.listero }}</span>
+                                    <span class="badge badge-light"
+                                          style="margin-bottom:10px;margin-left:10px; box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">{{ b.limpio }}</span>
+                                    <span class="badge badge-light"
+                                          style="margin-left:10px; margin-bottom:10px; box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82); color: red !important;">${{ b.premio }}</span>
+
+                                </div>
+                            {% endfor %}
+                            <hr>
+                            <div class="alert alert-secondary alert-dismissible fade show" role="alert"
+                                 style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">
+                                <div><strong>LIMPIO:</strong> ${{ request.user|obtenerLimpio }}</div>
+                                <hr>
+                                <div><strong>PREMIO:</strong> ${{ request.user|obtenerPremio }}</div>
+                                <hr>
+                                {% if  request.user|obtenerGananciaGeneral > 0 %}
+                                    <div><strong>GAN/PER:</strong><span
+                                            style="color: #1c7430"> ${{ request.user|obtenerGananciaGeneral }}
+                                    <i class="fa fa-arrow-up text-green"></i> (GANACIA)</span></div>
+                                {% else %}
+                                    <div><strong>GAN/PER:</strong> <span
+                                            style="color: red">${{ request.user|obtenerGananciaGeneral }}
+                                    <i class="fa fa-arrow-down text-red   "></i> (PERDIDA)</span></div>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert"
+                                 style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">
+                                <strong class="text-uppercase">Aun no hay registro contable para hoy.</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block table %}
+    <table class="table table-hover table-striped " id="tblCuadro">
+        <thead>
+        <tr>
+            {% if 'usuario.administrador' in request.user.get_group_permissions %}
+                <th rowspan="">Acciones</th>
+            {% endif %}
+            <th rowspan="">Centena</th>
+            <th rowspan="">Fijo</th>
+            <th rowspan="">Corrido 1</th>
+            <th rowspan="">Corrido 2</th>
+            <th rowspan="">Fecha</th>
+            <th rowspan="">Horario</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% if 'usuario.administrador' in request.user.get_group_permissions %}
+                <td>
+                    <a class="Acciones eliminarTiro" href="#" data-id="{{ tiro.id }}"
+                       type="button" title="Eliminar"><i class="fa fa-trash"></i></a>
+                </td>
+            {% endif %}
+            <td class="text-center"><span class="badge badge-danger">{{ tiro.primerNumero }}</span></td>
+            <td class="text-center"><span class="badge badge-info">{{ tiro.fijoCorrido }}</span></td>
+            <td class="text-center"><span class="badge badge-success">{{ tiro.primerCorrido }}</span></td>
+            <td class="text-center"><span class="badge badge-success">{{ tiro.segundoCorrido }}</span></td>
+            <td class="text-center"><span class="badge badge-light">{{ tiro.fecha }}</span></td>
+            <td class="text-center"><span class="badge badge-light">{{ tiro.horario }}</span></td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block buttons %}
+    {% if 'usuario.banco' in request.user.get_group_permissions  or 'usuario.administrador' in request.user.get_group_permissions %}
+        <a href="{% url 'charada:crearTiros' %}" type="button" class="btn btn-dark"
+           style="width: 50%; margin-bottom: 10px; margin-left: 5px;box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">
+            <i class="fa fa-plus-circle"></i>Nuevo</a>
+    {% endif %}
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script>
+        $(document).on('click', '.eliminarTiro', function () {
+            let idTiro = $(this).data('id');
+            let url = 'http://127.0.0.1:8000/charada/deleteTiro/' + idTiro;
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                    if (data.hasOwnProperty('error')) {
+                        window.location.reload()
+                        return false
+                    }
+                    window.location.reload()
+                })
+        });
+    </script>
+{% endblock %}

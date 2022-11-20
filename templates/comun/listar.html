@@ -1,0 +1,43 @@
+{% extends 'charada/home.html' %}
+{% load static %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'plugins/datatables-1.10.20/css/jquery.dataTables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'plugins/datatables-1.10.20/plugins/FixedHeader-3.1.7/css/fixedHeader.dataTables.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'plugins/datatables-1.10.20/plugins/FixedHeader-3.1.7/css/fixedHeader.bootstrap4.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'plugins/datatables-1.10.20/plugins/Select-1.3.1/css/select.dataTables.min.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'plugins/datatables-1.10.20/plugins/buttons-1.6.1/css/buttons.dataTables.min.css' %}">
+{% endblock %}
+
+{% block content %}
+            <div class="card" style="margin-top: 100px">
+                <div class="card-header d-block">
+                    <h3>{% block encabezadoTabla %}{% endblock %}</h3>
+                    {% block subEncabezadoTabla %}
+                    {% endblock %}
+                </div>
+                <div class="card-body p-0 table-border-style">
+                    <div class="table-responsive">
+
+
+                        {% block table %}
+                        {% endblock %}
+
+                    </div>
+                    <hr>
+                </div>
+            <br>
+            {% block buttons %}
+                        {% endblock %}
+            </div>
+    {% block contentExtra %}
+    {% endblock %}
+{% endblock %}
+
+

@@ -1,0 +1,87 @@
+{% extends 'comun/listar.html' %}
+{% load static %}
+
+{% block encabezadoTabla %}
+    <i class="fa fa-table"></i> <strong>{{ titulo }}</strong>
+{% endblock %}
+
+{% block contentExtra %}
+{% endblock %}
+
+
+{% block table %}
+    <table class="table table-hover table-striped table-bordered" id="tblCuadr">
+        <thead>
+        <tr>
+            {% if 'usuario.administrador' in request.user.get_group_permissions %}
+            <th rowspan="">Acciones</th>
+            {% endif %}
+            <th rowspan="">Entrada por</th>
+            <th rowspan="">Tipo</th>
+            <th rowspan="">Numero</th>
+            <th rowspan="">Parlet</th>
+            <th rowspan="">Apostado</th>
+            <th rowspan="">es Ganadora</th>
+            <th rowspan="">Premio</th>
+            <th rowspan="">Fecha</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for jugada in jugadas %}
+            <tr>
+                {% if 'usuario.administrador' in request.user.get_group_permissions %}
+                    <td>
+                        <a class="eliminarJugada" href="#" data-id="{{ jugada.id }}"
+                           type="button" title="Eliminar"><i class="fa fa-trash"></i></a>
+                    </td>
+                {% endif %}
+                <td class="text-center"><span class="badge badge-light">{{ jugada.fk_usuario.username }}</span></td>
+                <td class="text-center"><span class="badge badge-light">{{ jugada.get_tipo_display }}</span></td>
+                {% if jugada.tipo == 3 %}
+                    <td><a href="#" type="button"><i class="ml-40 fa fa-times-circle" style="color: red"></i></a></td>
+                {% else %}
+                    <td class="text-center"><span class="badge badge-light">{{ jugada.numero }}</span></td>
+                {% endif %}
+                {% if jugada.tipo == 1 or jugada.tipo == 2 or jugada.tipo == 4 %}
+                    <td><a href="#" type="button"><i class="ml-40 fa fa-times-circle" style="color: red"></i></a></td>
+                {% else %}
+                    <td class="text-center"><span class="badge badge-light">{{ jugada.parlet }}</span></td>
+                {% endif %}
+                <td class="text-center"><span class="badge badge-light">{{ jugada.apostado }}</span></td>
+                {% if jugada.esGanadora %}
+                    <td><a href="#" type="button"><i class="fa fa-check-circle" style="color: #01ff70"></i></a></td>
+                {% else %}
+                    <td><a href="#" type="button" title="{{ clasificadorInd.activo }}"><i class="fa fa-times-circle"
+                                                                                          style="color: red"></i></a>
+                    </td>
+                {% endif %}
+                <td class="text-center"><span class="badge badge-light">{{ jugada.premio }}</span></td>
+                <td class="text-center"><span class="badge badge-light">{{ jugada.fecha }}</span></td>
+
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+{% block js %}
+    {{ block.super }}
+    <script>
+        $(document).on('click', '.eliminarJugada', function () {
+            let idJugada = $(this).data('id');
+            let url = 'http://127.0.0.1:8000/charada/deleteJugada/' + idJugada;
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                    if (data.hasOwnProperty('error')) {
+                        location.href = data.url
+                        return false
+                    }
+                    location.href = data.url
+                })
+        });
+    </script>
+{% endblock %}

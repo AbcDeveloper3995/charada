@@ -1,0 +1,183 @@
+{% extends 'comun/listar.html' %}
+{% load static %}
+
+{% block encabezadoTabla %}
+    <i class="fa fa-table"></i> <strong>{{ titulo }}</strong>
+{% endblock %}
+
+{#{% block contentExtra %}#}
+{#    <div class="row" id="reporteGanacia">#}
+{#        <div class="col-sm-6">#}
+{#            <h5 class="text-center"><strong>Reporte GAN/PER </strong>#}
+{#            </h5>#}
+{#            <div class="card" ref="formReporteGanPer">#}
+{#                <div class="card-body">#}
+{#                    <form class="forms-sample" name="formReporteGanPer" id="formReporteGanPer">#}
+{#                        <div class="form-group row">#}
+{#                            <label><span style="color: red">*</span><strong> Fecha Inicio</strong></label>#}
+{#                            <div class="col-sm-9">#}
+{#                                <input type="date" class="form-control" ref="fechaInicio" name="fechaInicio"#}
+{#                                       placeholder="Ingrese un fecha">#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="form-group row">#}
+{#                            <label><span style="color: red">*</span><strong> Fecha Fin</strong></label>#}
+{#                            <div class="col-sm-9">#}
+{#                                <input type="date" class="form-control" ref="fechaFin" name="fechaFin"#}
+{#                                       placeholder="Ingrese una fecha">#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <button type="button" class="btn btn-light mr-2" @click="salvarLimitado"#}
+{#                                style=" box-shadow: 6px 7px 10px -5px rgba(0, 0, 0, 0.82);"><i#}
+{#                                class="fa fa-save"></i> Salvar#}
+{#                        </button>#}
+{#                        <hr style="border-color: darkred;">#}
+{#                        <div class="alert alert-secondary alert-dismissible fade show" ref="alertaReporte" hidden#}
+{#                             role="alert"#}
+{#                             style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">#}
+{#                            <div><strong>LIMPIO:</strong> ${$ limpio $}</div>#}
+{#                            <hr>#}
+{#                            <div><strong>PREMIO:</strong> ${$ premio $}</div>#}
+{#                            <hr>#}
+{#                            <div><strong>GAN/PER:</strong>#}
+{#                                <span v-if="ganancia > 0" style="color: #1c7430"> ${$ganancia$}#}
+{#                                    <i class="fa fa-arrow-up text-green"></i> (GANACIA)</span>#}
+{#                                <span v-if="ganancia < 0" style="color: red">${$ganancia$}#}
+{#                                    <i class="fa fa-arrow-down text-red   "></i> (PERDIDA)</span></div>#}
+{#                            {% if 'usuario.administrador' in request.user.get_group_permissions %}#}
+{#                                <hr>#}
+{#                                <div><strong>%:</strong>#}
+{#                                    <span style="color: #1c7430"> ${$porciento$}</span></div>#}
+{#                            {% endif %}#}
+{#                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">#}
+{#                                <i class="ik ik-x"></i>#}
+{#                            </button>#}
+{#                        </div>#}
+{#                    </form>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#{% endblock %}#}
+
+
+{% block table %}
+    <table class="table table-hover table-striped table-bordered" id="tblCuadro">
+        <thead>
+        <tr>
+            <th rowspan="">Acciones</th>
+            <th rowspan="">Bruto</th>
+            <th rowspan="">Limpio</th>
+            <th rowspan="">Premio</th>
+            <th rowspan="">Fecha</th>
+            <th rowspan="">Hora</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for c in contabilidad %}
+            <tr>
+                <td>
+                    <a class="Acciones eliminarTiro" href="#" data-id="{{ c.id }}"
+                       type="button" title="Eliminar"><i class="fa fa-trash"></i></a>
+                </td>
+                <td class="text-center"><span class="badge badge-light">{{ c.bruto }}</span></td>
+                <td class="text-center"><span class="badge badge-light">{{ c.limpio }}</span></td>
+                <td class="text-center"><span class="badge badge-light">{{ c.premio }}</span></td>
+                <td class="text-center"><span class="badge badge-light">{{ c.getSoloFecha }}</span></td>
+                <td class="text-center"><span class="badge badge-light">{{ c.getSoloHora }}</span></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{#{% block extra_js %}#}
+{#    <script>#}
+{#        const messageError = (obj) => {#}
+{#            var html = '';#}
+{#            if (typeof (obj) === 'object') {#}
+{#                html = '<ul style="text-align: left;">';#}
+{#                $.each(obj, function (key, value) {#}
+{#                    html += '<li>' + key + ': ' + value + '</li>';#}
+{#                });#}
+{#                html += '</ul>';#}
+{#            } else {#}
+{#                html = '<p>' + obj + '</p>';#}
+{#            }#}
+{#            toastr.error(html, 'Error', {#}
+{#                progressBar: true,#}
+{#                closeButton: true,#}
+{#                "timeOut": "5000",#}
+{#            });#}
+{#        }#}
+{##}
+{#        const messageExito = (obj) => {#}
+{#            var html = '';#}
+{#            if (typeof (obj) === 'object') {#}
+{#                html = '<ul style="text-align: left;">';#}
+{#                $.each(obj, function (key, value) {#}
+{#                    html += '<li>' + key + ': ' + value + '</li>';#}
+{#                });#}
+{#                html += '</ul>';#}
+{#            } else {#}
+{#                html = '<p>' + obj + '</p>';#}
+{#            }#}
+{#            toastr.success(html, 'Exito', {#}
+{#                progressBar: true,#}
+{#                closeButton: true,#}
+{#                "timeOut": "3000",#}
+{#            });#}
+{#        };#}
+{##}
+{#        const reporteGanacia = new Vue({#}
+{#            el: '#reporteGanacia',#}
+{#            delimiters: ['{$', '$}'],#}
+{#            data: {#}
+{#                limpio: 0,#}
+{#                premio: 0,#}
+{#                ganancia: 0,#}
+{#                porciento: 0#}
+{##}
+{#            },#}
+{##}
+{#            mounted() {#}
+{#            },#}
+{#            computed: {},#}
+{#            methods: {#}
+{##}
+{##}
+{#                salvarLimitado() {#}
+{#                    let form = new FormData()#}
+{#                    form.append('action', 'reporteGanPer')#}
+{#                    form.append('fechaInicio', this.$refs.fechaInicio.value)#}
+{#                    form.append('fechaFin', this.$refs.fechaFin.value)#}
+{#                    console.log(form)#}
+{#                    let dataRequest = {#}
+{#                        method: 'POST',#}
+{#                        body: form#}
+{#                    }#}
+{#                    const getJugadores = async () => {#}
+{#                        try {#}
+{#                            const response = await fetch('http://192.168.43.253:8080/charada/reporteGanacia', dataRequest)#}
+{#                            const data = await response.json()#}
+{#                            console.log(data)#}
+{#                            if (!data.hasOwnProperty('error')) {#}
+{#                                let alertaReporte = this.$refs.alertaReporte#}
+{#                                alertaReporte.hidden = false#}
+{#                                this.limpio = data.limpio#}
+{#                                this.premio = data.premio#}
+{#                                this.ganancia = data.ganancia#}
+{#                                this.porciento = (this.limpio * 15) / 100#}
+{#                                return false;#}
+{#                            }#}
+{#                            messageError(data.error);#}
+{#                        } catch (error) {#}
+{#                            console.log(error)#}
+{#                        }#}
+{#                    }#}
+{#                    getJugadores()#}
+{#                },#}
+{#            },#}
+{#        })#}
+{#    </script>#}
+{#{% endblock %}#}

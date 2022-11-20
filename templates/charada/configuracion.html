@@ -1,0 +1,356 @@
+{% extends 'charada/home.html' %}
+{% load filters %}
+{% load static %}
+
+{% block content %}
+    <div class="card" style="margin-top: 100px">
+        <div class="card-body" id="configuracion">
+            <div class="row">
+                <div class="col-sm-6">
+                    <form method="post">
+                        <!-- select -->
+                        <div class="form-group">
+                            <h5 class="text-center"><strong>TOPES</strong></h5>
+                            <hr style="border-color: darkred;">
+                            <h5><strong>Tope actual en Bola:</strong> <span class="badge badge-light"
+                                                                            style=" box-shadow: 6px 7px 10px -5px rgba(0, 0, 0, 0.82);">${{ request.user|topeBola }}</span>
+                            </h5>
+                            <label><span style="color: red">*</span><strong> Establecer nuevo tope para
+                                Bola</strong></label>
+                            <select class="form-control" v-model="topeBola" @change="establecerTopeB($event)">
+                                <option value="100"> $100</option>
+                                <option value="200"> $200</option>
+                                <option value="300"> $300</option>
+                                <option value="400"> $400</option>
+                                <option value="500"> $500</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <hr style="border-color: darkred;">
+                            <h5><strong>Tope actual Cen/Par:</strong> <span class="badge badge-light"
+                                                                            style=" box-shadow: 6px 7px 10px -5px rgba(0, 0, 0, 0.82);">${{ request.user|topeCP }}</span>
+                            </h5>
+                            <label><span style="color: red">*</span><strong> Establecer nuevo tope para Parlet y
+                                Centena</strong>
+                            </label>
+                            <select class="form-control " v-model="topeCP" @change="establecerTopeCP($event)">
+                                <option value="10"> $10</option>
+                                <option value="20"> $20</option>
+                                <option value="30"> $30</option>
+                                <option value="40"> $40</option>
+                                <option value="50"> $50</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <br></br>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h5 class="text-center"><strong>LIMITADOS </strong>
+                        {% if 'usuario.banco' in request.user.get_group_permissions  or 'usuario.administrador' in request.user.get_group_permissions %}
+                        <button type="button" class="btn btn-icon btn-dark" @click="mostrarFormLimitados"
+                                style=" box-shadow: 6px 7px 10px -5px rgba(0, 0, 0, 0.82);">
+                            <i class="fa fa-plus"></i></button>
+                        {% endif %}
+                    </h5>
+                    <div class="card" ref="formLimitados" hidden>
+                        <div class="card-header"><h3>Nuevo limitado </h3>
+                            <button style="margin-left: 175px" type="button" class="close" @click="cerrarFormLimitados">
+                                <i class="fa fa-times-circle"></i>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <form class="forms-sample" name="formLimitados" id="formLimitados">
+                                <div class="form-group row">
+                                    <label><span style="color: red">*</span><strong> Numero</strong></label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control"  ref="numero" name="numero"
+                                               placeholder="Ingrese un numero"><span style="opacity: 0.6; color: darkred">Ej:Para formato parlet -> 10-12</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label><span style="color: red">*</span><strong> Tipo</strong></label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" ref="tipoLimitado" v-model="tipoLimitado"
+                                                @change="establecerPrecioSegunTipo($event)">
+                                            <option value=1> Fijo</option>
+                                            <option value=2> Corrido</option>
+                                            <option value=3> Parlet</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label><span style="color: red">*</span><strong> Precio</strong></label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" ref="precio" name="precio" readonly>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-light mr-2" @click="salvarLimitado"
+                                        style=" box-shadow: 6px 7px 10px -5px rgba(0, 0, 0, 0.82);"><i
+                                        class="fa fa-save"></i> Salvar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <hr style="border-color: darkred;">
+                    <h5><strong>Limitados para Bola</strong></h5>
+                    <span class="badge badge-light" @click="eliminarLimitadoBola(index)"
+                          v-for="(item, index) in listaLimitadoBola"
+                          style=" box-shadow: 6px 7px 10px -5px rgba(0, 0, 0, 0.82);">{$ item $} </span>
+
+
+                    <hr style="border-color: darkred;">
+                    <h5><strong>Limitados para Parlet</strong></h5>
+                    <span class="badge badge-light" @click="eliminarLimitadoParlet(index)"
+                          v-for="(item, index) in listaLimitadoParlet"
+                          style=" box-shadow: 6px 7px 10px -5px rgba(0, 0, 0, 0.82);">{$ item $}</span>
+                    <hr style="border-color: darkred;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'propios/js/configuraciones.js' %}"></script>
+    <script>
+        const messageError = (obj) => {
+            var html = '';
+            if (typeof (obj) === 'object') {
+                html = '<ul style="text-align: left;">';
+                $.each(obj, function (key, value) {
+                    html += '<li>' + key + ': ' + value + '</li>';
+                });
+                html += '</ul>';
+            } else {
+                html = '<p>' + obj + '</p>';
+            }
+            toastr.error(html, 'Error', {
+                progressBar: true,
+                closeButton: true,
+                positionClass: "toast-bottom-left",
+                "timeOut": "5000",
+            });
+        }
+
+        const messageExito = (obj) => {
+            var html = '';
+            if (typeof (obj) === 'object') {
+                html = '<ul style="text-align: left;">';
+                $.each(obj, function (key, value) {
+                    html += '<li>' + key + ': ' + value + '</li>';
+                });
+                html += '</ul>';
+            } else {
+                html = '<p>' + obj + '</p>';
+            }
+            toastr.success(html, 'Exito', {
+                progressBar: true,
+                closeButton: true,
+                positionClass: "toast-bottom-left",
+                "timeOut": "3000",
+            });
+        };
+
+        const configuracion = new Vue({
+            el: '#configuracion',
+            delimiters: ['{$', '$}'],
+            data: {
+                topeBola: '',
+                topeCP: '',
+                tipoLimitado: '',
+                listaLimitadoBola: '',
+                listaLimitadoParlet: '',
+
+            },
+
+            mounted() {
+                const getLimitados = () => {
+                    let limitadoBola = []
+                    let limitadoParlet = []
+                    let data = fetch('http://127.0.0.1:8000/charada/getLimitados')
+                        .then(res => res.json())
+                        .then(data => {
+                            data.limitados.forEach(element => {
+                                console.log(element)
+                                if (element.tipo == 1 || element.tipo == 2) {
+                                    limitadoBola.push(element.numero)
+                                    this.listaLimitadoBola = limitadoBola
+                                } else {
+                                    limitadoParlet.push(element.numero)
+                                    this.listaLimitadoParlet = limitadoParlet
+                                }
+                            })
+
+                        })
+                }
+                getLimitados()
+            },
+            computed: {},
+            methods: {
+
+                mostrarFormLimitados() {
+                    let form = this.$refs.formLimitados
+                    form.hidden = false
+                },
+                cerrarFormLimitados() {
+                    let form = this.$refs.formLimitados
+                    form.hidden = true
+                },
+                establecerTopeB(event) {
+                    let form = new FormData()
+                    form.append('action', 'topeBola')
+                    form.append('tope', this.topeBola)
+                    let dataRequest = {
+                        method: 'POST',
+                        body: form
+                    }
+                    const enviareTopeB = async () => {
+                        try {
+                            const response = await fetch('http://127.0.0.1:8000/charada/tope', dataRequest)
+                            const data = await response.json()
+                            console.log(data)
+                            if (!data.hasOwnProperty('error')) {
+                                messageExito(data.sms)
+                                return false;
+                            }
+                            messageError(data.error);
+                        } catch (error) {
+                            console.log(error)
+                        }
+                    }
+                    enviareTopeB()
+                },
+                establecerTopeCP(event) {
+                    let form = new FormData()
+                    form.append('action', 'topeCP')
+                    form.append('tope', this.topeCP)
+                    let dataRequest = {
+                        method: 'POST',
+                        body: form
+                    }
+                    const enviarTopeCP = async () => {
+                        try {
+                            const response = await fetch('http://127.0.0.1:8000/charada/tope', dataRequest)
+                            const data = await response.json()
+                            console.log(data)
+                            if (!data.hasOwnProperty('error')) {
+                                messageExito(data.sms)
+                                return false;
+                            }
+                            messageError(data.error);
+                        } catch (error) {
+                            console.log(error)
+                        }
+                    }
+                    enviarTopeCP()
+                },
+
+                establecerPrecioSegunTipo(event) {
+                    if (this.tipoLimitado == 1) {
+                        this.$refs.precio.value = 50
+                    }
+                    if (this.tipoLimitado == 2) {
+                        this.$refs.precio.value = 20
+                    }
+                    if (this.tipoLimitado == 3) {
+                        this.$refs.precio.value = 500
+                    }
+                },
+
+                salvarLimitado() {
+                    let form = new FormData()
+                    form.append('action', 'crearLimitado')
+                    form.append('numero', this.$refs.numero.value)
+                    form.append('tipo', this.tipoLimitado)
+                    form.append('precio', this.$refs.precio.value)
+                    console.log(form)
+                    let dataRequest = {
+                        method: 'POST',
+                        body: form
+                    }
+                    const enviarLimitados = async () => {
+                        try {
+                            const response = await fetch('http://127.0.0.1:8000/charada/cofiguracion', dataRequest)
+                            const data = await response.json()
+                            console.log(data)
+                            if (!data.hasOwnProperty('error')) {
+                                messageExito(data.sms)
+                                let limitadoBola = []
+                                let limitadoParlet = []
+                                fetch('http://127.0.0.1:8000/charada/getLimitados')
+                                    .then(res => res.json())
+                                    .then(response => {
+                                        response.limitados.forEach(element => {
+                                            console.log(element)
+                                            if (element.tipo == 1 || element.tipo == 2) {
+                                                limitadoBola.push(element.numero)
+                                                this.listaLimitadoBola = limitadoBola
+                                            } else {
+                                                limitadoParlet.push(element.numero)
+                                                this.listaLimitadoParlet = limitadoParlet
+                                            }
+                                        })
+
+                                    })
+                                this.$refs.formLimitados.hidden = true
+                                this.$refs.numero.value = ''
+                                this.$refs.precio.value = ''
+                                return false;
+                            }
+                            messageError(data.error);
+                        } catch (error) {
+                            console.log(error)
+                        }
+                    }
+                    enviarLimitados()
+                },
+
+                eliminarLimitadoBola(index) {
+                    console.log(this.listaLimitadoBola[index])
+                    let limitadoBola = []
+                    let limitadoParlet = []
+                    let url = 'http://127.0.0.1:8000/charada/deleteLimitado/' + this.listaLimitadoBola[index]
+                    fetch(url)
+                        .then(res => res.json())
+                        .then(data => {
+                            messageExito(data.sms)
+                            data.limitados.forEach(element => {
+                                console.log(element)
+                                if (element.tipo == 1 || element.tipo == 2) {
+                                    limitadoBola.push(element.numero)
+                                    this.listaLimitadoBola = limitadoBola
+                                } else {
+                                    limitadoParlet.push(element.numero)
+                                    this.listaLimitadoParlet = limitadoParlet
+                                }
+                            })
+                        })
+                },
+                eliminarLimitadoParlet(index) {
+                    console.log(this.listaLimitadoParlet[index])
+                    let limitadoBola = []
+                    let limitadoParlet = []
+                    let url = 'http://127.0.0.1:8000/charada/deleteLimitado/' + this.listaLimitadoParlet[index]
+                    fetch(url)
+                        .then(res => res.json())
+                        .then(data => {
+                            messageExito(data.sms)
+                            data.limitados.forEach(element => {
+                                console.log(element)
+                                if (element.tipo == 1 || element.tipo == 2) {
+                                    limitadoBola.push(element.numero)
+                                    this.listaLimitadoBola = limitadoBola
+                                } else {
+                                    limitadoParlet.push(element.numero)
+                                    this.listaLimitadoParlet = limitadoParlet
+                                }
+                            })
+                        })
+                },
+            },
+        })
+    </script>
+{% endblock %}

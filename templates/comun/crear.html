@@ -1,0 +1,36 @@
+{% extends 'charada/home.html' %}
+{% load static %}
+
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'plugins/bootstrapValidator/bootstrapValidator.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/select2-4.0.13/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/select2-4.0.13/css/select2-bootstrap4.min.css' %}">
+     <link rel="stylesheet" href="{% static 'plugins/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'propios/css/crear/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="card" style="margin-top: 100px">
+        <div class="card-header" >
+            <h3>{% block encabezadoForm %}{% endblock %}</h3>
+        </div>
+        <div class="card-body">
+            {% block formulario %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'plugins/bootstrapValidator/bootstrapValidator.min.js' %}"></script>
+    <script src="{% static 'plugins/select2-4.0.13/js/select2.min.js' %}"></script>
+    <script src="{% static 'plugins/select2-4.0.13/js/i18n/es.js' %}"></script>
+     <script src="{% static 'plugins/moment-2.25.3/moment-with-locales.js' %}"></script>
+    <script src="{% static 'plugins/tempusdominus-bootstrap-4/tempusdominus-bootstrap-4.min.js' %}"></script>
+{% endblock %}
+
+{% block grafico_js %}
+{% endblock %}

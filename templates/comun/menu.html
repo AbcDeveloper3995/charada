@@ -1,0 +1,36 @@
+{% load static %}
+<div class="app-sidebar colored">
+    <div class="sidebar-header">
+        <a class="header-brand" href="{% url 'charada:home' %}">
+            <div class="logo-img">
+                <img src="{% static 'propios/img/favicon.png ' %}" class="header-brand-img" alt="lavalite">
+            </div>
+            <span class="text">Charada</span>
+        </a>
+        <button type="button" class="nav-toggle"><i data-toggle="expanded"
+                                                    class="ik ik-toggle-right toggle-icon"></i></button>
+        <button id="sidebarClose" class="nav-close"><i class="ik ik-x"></i></button>
+    </div>
+
+    <div class="sidebar-content">
+        <div class="nav-container">
+            <nav id="main-menu-navigation" class="navigation-main">
+                <div class="nav-lavel">Menu</div>
+                <div class="nav-item has-sub">
+                    <a href="#"><i class="ik ik-box"></i><span>Charada</span></a>
+                    <div class="submenu-content">
+                        <a href="{% url 'charada:listarJugadas' %}" class="menu-item">Jugadas</a>
+                        {% if 'usuario.banco' in request.user.get_group_permissions  or 'usuario.administrador' in request.user.get_group_permissions %}
+                        <a href="{% url 'charada:listarContabilidad' %}" class="menu-item">Contabilidad</a>
+                        {% endif %}
+                        <a href="{% url 'charada:listarTiros' %}" class="menu-item">Tiros</a>
+
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <a href="{% url 'charada:cofiguracion' %}"><i class="fa fa-cogs"></i><span>Configuración</span></a>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>

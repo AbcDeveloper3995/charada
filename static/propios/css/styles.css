@@ -1,0 +1,55 @@
+.textoLogin {
+    text-align: center;
+    font-family: Bahnschrift
+}
+
+.controlls {
+    display: grid;
+    grid-template-columns: repeat(3, 50px);
+
+}
+
+.boton-calculadora {
+    font-size: 20px;
+    padding: 35px;
+
+    border-radius: 15px;
+    margin-top: 2px;
+    box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);
+}
+
+.boton-accion {
+    font-size: 15px;
+    box-shadow: rgba(0, 0, 0, 0.82) 6px 7px 10px -4px;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    padding-right: 20px;
+    padding-left: 20px;
+    border-radius: 15px;
+}
+
+.red {
+    color: red;
+}
+
+.alto {
+    height: 50px;
+    text-align: justify;
+    overflow-y: auto;
+}
+
+.lista {
+    padding: 0;
+    margin: 1rem 0 0 0;
+    list-style: none;
+}
+
+.elementosLista {
+    font-size: 15px;
+}
+
+.eliminarJugada {
+    color: rgb(1, 2, 3);
+    font-size: 20px;
+    margin-left: 2px;
+}

@@ -1,0 +1,75 @@
+{% extends 'comun/crear.html' %}
+{% load static %}
+
+{% block encabezadoForm %}
+    <i class="ik ik-user-plus"> {{ titulo }}</i>
+{% endblock %}
+
+{% block formulario %}
+    <form method="post" name="tiroForm" id="tiroForm">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-6">
+                 <span class="badge badge-dark" style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">Centena</span>
+                <br></br>
+                <div class="form-group">
+                    <div class="input-group input-group-default">
+                        <span class="input-group-prepend"><label class="input-group-text"><i
+                                class="ik ik-fast-forward"></i></label></span>
+                        {{ form.primerNumero }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <span class="badge badge-dark" style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">Fijo</span>
+                <br></br>
+                <div class="form-group">
+                    <div class="input-group input-group-default">
+                        {{ form.fijoCorrido }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <span class="badge badge-dark" style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">Corrido 1</span>
+                <br></br>
+                <div class="form-group">
+                    <div class="input-group input-group-default">
+                        <span class="input-group-prepend"><label class="input-group-text"><i
+                                class="ik ik-airplay"></i></label></span>
+                        {{ form.primerCorrido }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <span class="badge badge-dark" style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">Corrido 2</span>
+                <br></br>
+                <div class="form-group">
+                    <div class="input-group input-group-default">
+                        <span class="input-group-prepend"><label class="input-group-text"><i
+                                class="ik ik-hard-drive"></i></label></span>
+                        {{ form.segundoCorrido }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <span class="badge badge-dark" style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">Horario</span>
+                <br></br>
+                <div class="form-group">
+                    <div class="input-group input-group-default">
+                        <span class="input-group-prepend"><label class="input-group-text"><i
+                                class="ik ik-fast-forward"></i></label></span>
+                        {{ form.horario }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <button type="submit" class="btn btn-secondary mr-2" style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);">
+            <i class="fa fa-save "></i> Aceptar</button>
+        <a href="{% url 'charada:listarTiros' %}" style="box-shadow: 6px 7px 10px -4px rgba(0, 0, 0, 0.82);" class="btn btn-dark mr-2"><i
+                class="fa fa-arrow-alt-circle-left "></i>Cancelar</a>
+    </form>
+{% endblock %}
+
